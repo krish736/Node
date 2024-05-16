@@ -1,23 +1,13 @@
-const { readFile, writeFile } = require("fs").promises;
+const EventEmitter = require("events");
 
-const start = async () => {
-  try {
-    const first = await readFile(
-      "./built-in_modules/pathcheck/subfolder/first.txt",
-      "utf8"
-    );
-    const second = await readFile(
-      "./built-in_modules/pathcheck/subfolder/second.txt",
-      "utf8"
-    );
-    await writeFile(
-      "./built-in_modules/pathcheck/subfolder/async_await.txt",
-      "This is how to use async await!"
-    );
-    console.log(first, second);
-  } catch (error) {
-    console.log(error);
-  }
-};
+const customEvent = new EventEmitter();
 
-start();
+customEvent.on("response", (name, id) => {
+  console.log(`data received , name : ${name} , id : ${id}`);
+});
+
+customEvent.on("response", () => {
+  console.log("data received 2");
+});
+
+customEvent.emit("response", "john", 1);
